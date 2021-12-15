@@ -1,6 +1,6 @@
 from django import views
-from cuenta import views
 from django.shortcuts import redirect
+from publicacion import views
 
 """blog URL Configuration
 
@@ -23,14 +23,7 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', views.index),
 
-    path('cuenta/', views.cuenta),
-    path('cuenta/registrar/', views.registrar),
-    path('cuenta/iniciar/', views.iniciar_sesion),
-    path('cuenta/cerrar/', views.cerrar_sesion),
-    path('cuenta/cambiarPassword/', views.cambiarPassword),
-    #path('cuenta/cambiaEmail/', views.cambiarEmail),
-    #path('cuenta/creada/', views.cuenta_creada),
+    path('blog/',views.publicaciones)
     
 ]
