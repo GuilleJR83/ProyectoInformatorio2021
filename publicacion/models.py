@@ -25,14 +25,23 @@ class Publicacion(models.Model):
     def Id(self):
         return self.id
 
-# class Comentario(models.Model):
-#     publicacion = models.ForeignKey(Publicacion, on_delete=models.CASCADE)
-#     email = models.EmailField()
+class Comentario(models.Model):
+    publicacion = models.ForeignKey(Publicacion, on_delete=models.CASCADE)
+    fechaComentario = models.DateTimeField(auto_now_add=True)
+    contenido = models.TextField()
 
-#     contenido = models.TextField()
-#     fechaCreacion = models.DateTimeField()#auto_now_add=True
-#     fechaEdicion = models.DateTimeField()#auto_now=True
+    def __str__(self):
+        return self.user.username
+
 
 # class Voto(models.Model):
 #      usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
 #      publicacion = models.ForeignKey(Publicacion, on_delete=models.CASCADE)
+
+
+class Like(models.Model):
+    #usuario = models.ForeignKey()
+    publicacion = models.ForeignKey(Publicacion, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
