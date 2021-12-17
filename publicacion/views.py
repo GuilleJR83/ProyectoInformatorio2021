@@ -31,7 +31,8 @@ def nueva(request):
             # Sí entra aquí, quiere decir que están bien los datos
             form.save() # Asi que vamos a guardarlos (a registrar el usuario en al base de datos)
             
-            return redirect('../') # retornamos una url que nos manda a cuenta/index.html (panel de opciones para el usuario)
+            #return redirect('../') # retornamos una url que nos manda a cuenta/index.html (panel de opciones para el usuario)
+            return render(request, 'blog/post/' + form.id, {}) # renderizamos
 
     else: # Si el método pasado no es POST
         form = PublicacionNuevaForm() # mostramos el form vacío para que el cliente lo rellene
@@ -46,4 +47,4 @@ def eliminar(request, id):
     pass
 
 def ver(request, id):
-    pass
+    return render(request, 'publicacion/publicacion.html', {})
