@@ -1,6 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="col-lg-8">
-    <h1>En desarrollo...</h1>
+    <h1>Vista de publicacion.......</h1>
+    
+     {# if pub.destacado #}
+    <!-- Featured blog post-->
+    <div class="card mb-4">
+        {# if publica.imagen #}{# url 'publicacion_ver' pub.imagen.url #}{# endif #}
+        <img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" /></a>
+        <div class="card-body">
+            <div class="small text-muted">{{ Publicacion.fechaCreacion }}</div>
+            <h2 class="card-title">{{ Publicacion.titulo }}</h2>
+            <p class="card-text">{{ Publicacion.contenido|truncatechars:50 }}</p>
+            
+        </div>
+    </div>
+    <body>
+        <p>....</p>
+       <a href = "{%url 'publicacion_editar' Publicacion.id%}"> Editar</a> 
+       {{Publicacion.titulo}}
+    </body>   
 </div>
 {% endblock %}

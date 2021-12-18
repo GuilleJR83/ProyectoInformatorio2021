@@ -1,5 +1,5 @@
 # Importamos RENDER y REDIRECT
-from django.shortcuts import render, redirect
+from django.shortcuts import render, HttpResponse, redirect
 
 from cuenta.models import Usuario
 from publicacion.models import Publicacion
@@ -10,7 +10,7 @@ from publicacion.forms import *
 def index(request): # inicio de la página web
     listado = Publicacion.objects.all()
     template = 'publicacion/lista.html'
-    contexto = {'publicaciones': listado, }
+    contexto = {'publicaciones': listado }
 
     return render(request, template, contexto)
 
@@ -31,8 +31,9 @@ def nueva(request):
             # Sí entra aquí, quiere decir que están bien los datos
             form.save() # Asi que vamos a guardarlos (a registrar el usuario en al base de datos)
             
-            #return redirect('../') # retornamos una url que nos manda a cuenta/index.html (panel de opciones para el usuario)
-            return render(request, 'blog/post/' + form.id, {}) # renderizamos
+            return redirect('index') # retornamos una url que nos manda a cuenta/index.html (panel de opciones para el usuario)
+            #return render(request, 'blog/post/' + form.id, {}) # renderizamos
+            #return redirect("publicacion_ver")
 
     else: # Si el método pasado no es POST
         form = PublicacionNuevaForm() # mostramos el form vacío para que el cliente lo rellene
@@ -41,10 +42,22 @@ def nueva(request):
     return render(request, 'publicacion/nueva.html', contexto) # renderizamos
 
 def editar(request, id):
-    pass
+    publica = Publicacion.objects.get(pk=id)
+    form = PublicacionNuevaForm(request.POST or None, instance=publica) 
+    #Al entrar a editar, no quiero que me aparezca los datos vacios
+    print("metodo:",request.method)
+    if request.method == "POST":
+        if form.is_valid():
+            publica = form.save()
+            return redirect('index')
+
+    contexto = {"form":form}
+    return render (request,'publicacion/editar.html', contexto)
 
 def eliminar(request, id):
     pass
 
 def ver(request, id):
-    return render(request, 'publicacion/publicacion.html', {})
+    publica = Publicacion.objects.get(pk=id)
+    contexto = {"Publicacion":publica}
+    return render(request, 'publicacion/publicacion.html', contexto)
