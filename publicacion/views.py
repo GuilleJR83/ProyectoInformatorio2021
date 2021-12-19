@@ -1,22 +1,31 @@
 # Importamos RENDER y REDIRECT
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, redirect
 
+from comentario.views import *
+from comentario.models import *
 from cuenta.models import Usuario
-from publicacion.models import Publicacion
+from publicacion.models import *
 from publicacion.forms import *
-
-# Create your views here.
-
-def index(request): # inicio de la página web
-    listado = Publicacion.objects.all()
-    template = 'publicacion/lista.html'
-    contexto = {'publicaciones': listado }
-
-    return render(request, template, contexto)
 
 def nosotros(request):
     template = 'nosotros.html'
     contexto = {}
+
+    return render(request, template, contexto)
+
+def index(request): # inicio de la página web
+    listado = Publicacion.objects.all()
+    
+    template = 'publicacion/lista.html'
+    contexto = {'publicaciones': listado,  }
+
+    return render(request, template, contexto)
+
+def autor(request): # devuelve los post que publicó el usuario actualmente autenticado
+    listado = Publicacion.objects.filter(autor=request.user.id)
+    
+    template = 'publicacion/lista.html'
+    contexto = {'publicaciones': listado, }
 
     return render(request, template, contexto)
 
@@ -29,11 +38,13 @@ def nueva(request):
                             # email, clave) están y son válidos.
             #form.autor = Usuario.objects.get(id=request.user.id) # Usuario.objects.get(request.user)
             # Sí entra aquí, quiere decir que están bien los datos
-            form.save() # Asi que vamos a guardarlos (a registrar el usuario en al base de datos)
             
-            return redirect('index') # retornamos una url que nos manda a cuenta/index.html (panel de opciones para el usuario)
-            #return render(request, 'blog/post/' + form.id, {}) # renderizamos
-            #return redirect("publicacion_ver")
+            #form.save() # Asi que vamos a guardarlos (a registrar el usuario en al base de datos)
+            pub = form.save(commit=False)
+            pub.autor = Usuario(pk=request.user.id)
+            pub.save()
+
+            return redirect('publicacion_ver', pub.id) # retornamos una url que nos manda a cuenta/index.html (panel de opciones para el usuario)
 
     else: # Si el método pasado no es POST
         form = PublicacionNuevaForm() # mostramos el form vacío para que el cliente lo rellene
@@ -43,7 +54,7 @@ def nueva(request):
 
 def editar(request, id):
     publica = Publicacion.objects.get(pk=id)
-    form = PublicacionNuevaForm(request.POST or None, instance=publica) 
+    form = PublicacionEditarForm(request.POST or None, instance=publica) 
     #Al entrar a editar, no quiero que me aparezca los datos vacios
     print("metodo:",request.method)
     if request.method == "POST":
@@ -55,9 +66,30 @@ def editar(request, id):
     return render (request,'publicacion/editar.html', contexto)
 
 def eliminar(request, id):
-    pass
+    publicacion = Publicacion.objects.get(pk=id)
+    form = PublicacionEliminarForm(request.POST or None, instance=publicacion)
+
+    if request.method == 'POST':
+        publicacion.delete()
+        return redirect('index')
+
+    template = 'publicacion/eliminar.html'
+    contexto = {'form': form, 'publicacion': publicacion}
+    return render (request, template, contexto)
 
 def ver(request, id):
     publica = Publicacion.objects.get(pk=id)
-    contexto = {"Publicacion":publica}
+    form = ComentarioNuevoForm(request.POST or None)
+
+    if request.method == "POST":
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.autor=Usuario(pk=request.user.id)
+            comentario.publicacion=publica
+            comentario.save()
+            return redirect('comentario_ver', id, comentario.id)
+    
+    comentarios = Comentario.objects.filter(publicacion=id) # publica.getComentarios()
+    contexto = {'publicacion': publica, 'comentarios': comentarios, 'form': form}
+
     return render(request, 'publicacion/publicacion.html', contexto)

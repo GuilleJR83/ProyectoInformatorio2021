@@ -1,5 +1,5 @@
 # Importamos el modelo User que vamos a heredar para crear nuestras cuentas de usuarios.
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.db import models
 #from django.conf import settings
 

@@ -4,11 +4,30 @@
 <div class="col-lg-8">
     <!-- Featured blog post-->
     <div class="card mb-4">
-        <h1>Crear nueva cuenta de usuario</h1>
+        <h2>Crear nueva cuenta de usuario</h2>
             <form action="" method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
-                <input type="submit" value="Registrar" />
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                    <input type="text" class="form-control" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" value="" />
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Nombre y Apellido</span>
+                    <input type="text" aria-label="Nombre" class="form-control" name="{{ form.first_name.name }}" id="{{ form.first_name.id_for_label }}" value="" />
+                    <input type="text" aria-label="Apellido" class="form-control" name="{{ form.last_name.name }}" id="{{ form.last_name.id_for_label }}" value="" />
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+                    <input type="password" class="form-control" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}" value="" />
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                    <input type="password" class="form-control" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}" value="" />
+                </div>
+                <div class="btn-group" role="group">
+                    <a class="btn btn-dark" type="button" role="button" href="{% url 'index' %}">Cancelar</a>
+                    <input type="submit" class="btn btn-primary" value="Registrar" />
+                </div>
             </form>
             <p class="message">¿Ya tiene cuenta? <a href="../iniciar/">Iniciar sesión</a></p>
     </div>

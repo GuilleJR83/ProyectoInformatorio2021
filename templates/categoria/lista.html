@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-lg-8">
+{% if categorias.count > 0 %}
+    <h2>Listado de categorías</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+{% for cat in categorias %}
+            <tr>
+                <td>{{ cat.id }}</th>
+                <th scope="row">{{ cat.descripcion }}</td>
+                <td><a href="{% url 'categoria_editar' cat.id %}">Editar</a> | <a href="{% url 'categoria_eliminar' cat.id %}">Eliminar</a></td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="alert alert-info" role="alert">No se han encontrado categorías que listar.</div>
+{% endif %}
+<a class="btn btn-primary" type="button" href="{% url 'categoria_nueva' %}">Nueva categoría</a>
+</div>
+{% endblock %}

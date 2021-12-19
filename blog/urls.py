@@ -3,9 +3,11 @@ from django import views
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import path, include
+from django.utils import decorators
 
-from publicacion.models import Publicacion
-import cuenta.views, publicacion.views
+#from publicacion.models import Publicacion
+import categoria.views, comentario.views, cuenta.views, publicacion.views
+import urllib.parse
 
 """blog URL Configuration
 
@@ -30,15 +32,27 @@ urlpatterns = [
     path('nosotros', publicacion.views.nosotros, name='nosotros'), # inicio de la web
 
     path('blog/post/nueva/', publicacion.views.nueva, name='publicacion_nueva'),
-    path('blog/post/editar/<int:id>', publicacion.views.editar, name='publicacion_editar'),
-    path('blog/post/eliminar/<int:id>', publicacion.views.eliminar, name='publicacion_eliminar'),
+    path('blog/post/editar/<int:id>/', publicacion.views.editar, name='publicacion_editar'),
+    path('blog/post/eliminar/<int:id>/', publicacion.views.eliminar, name='publicacion_eliminar'),
     path('blog/post/<int:id>/', publicacion.views.ver, name='publicacion_ver'),
+    path('blog/post/autor/', publicacion.views.autor, name='publicacion_por_autor'),
+    path('blog/post/<int:publicacion_id>/comentario/<int:comentario_id>/', comentario.views.ver, name='comentario_ver'),
+
+    path('categoria/listado/', categoria.views.listado, name='categoria_listado'),
+    path('categoria/nueva/', categoria.views.nueva, name='categoria_nueva'),
+    path('categoria/editar/<int:id>/', categoria.views.editar, name='categoria_editar'),
+    path('categoria/eliminar/<int:id>/', categoria.views.eliminar, name='categoria_eliminar'),
+    path('categoria/<int:id>/', categoria.views.filtrar, name='categoria_filtrar'),
+
+    #path('usuario/listado/', cuenta.views.usuario_listado, name="usuario_listado"),
+    #path('usuario/nuevo/', cuenta.views.usuario_nuevo, name="usuario_nuevo"),
+    #path('usuario/editar/<int:id>/', cuenta.views.usuario_editar, name="usuario_editar"),
+    #path('usuario/eliminar/<int:id>/', cuenta.views.usuario_eliminar, name="usuario_eliminar"),
 
     path('cuenta/', cuenta.views.cuenta, name="cuenta"),
     path('cuenta/registrar/', cuenta.views.registrar, name="cuenta_registrar"),
     path('cuenta/iniciar/', cuenta.views.iniciar_sesion, name="iniciar_sesion"),
     path('cuenta/cerrar/', cuenta.views.cerrar_sesion, name="cerrar_sesion"),
     path('cuenta/cambiarPassword/', cuenta.views.cambiarPassword, name="cambiarPassword"),
-    #path('cuenta/cambiaEmail/', views.cambiarEmail),
-    #path('cuenta/creada/', views.cuenta_creada),    
+    #path('cuenta/creada/', views.cuenta_creada),
 ]

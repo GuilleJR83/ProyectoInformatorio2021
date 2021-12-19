@@ -5,11 +5,34 @@
     <!-- Featured blog post-->
     {% if user.is_authenticated %}
     <div class="card mb-4">
-        <h1>Nueva publicación</h1>
+        <h2>Nueva publicación</h2>
         <form action="" method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" class="btn btn-primary" value="Publicar" />
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="{{ form.titulo.id_for_label }}">{{ form.titulo.label }}</label>
+                    <input type="text" class="form-control" required name="{{ form.titulo.name }}" id="{{ form.titulo.id_for_label }}" value="" />
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="{{ form.contenido.id_for_label }}">{{ form.contenido.label }}</label>
+                    <textarea class="form-control" name="{{ form.contenido.name }}" required id="{{ form.contenido.id_for_label }}" aria-label="With textarea" rows="5"></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="{{ form.categoria.id_for_label }}">{{ form.categoria.label }}</label>
+                    <select class="form-select" aria-label="Seleccione la categoría" required name="{{ form.categoria.name }}" id="{{ form.categoria.id_for_label }}">
+                        <option value="" selected>----------</option>
+                        {% for cat in categorias %}
+                        <option value="{{ cat.id }}">{{ cat.descripcion }}</option>
+                        {% endfor %}
+                      </select>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="{{ form.imagen.id_for_label }}">{{ form.imagen.label }}</label>
+                    <input type="file" class="form-control" name="{{ form.imagen.name }}" id="{{ form.imagen.id_for_label }}" />
+                </div>
+                <div class="btn-group" role="group">
+                    <a class="btn btn-dark" type="button" role="button" href="{% url 'index' %}">Cancelar</a>
+                    <input type="submit" class="btn btn-primary" value="Publicar" />
+                </div>
         </form>
     </div>
     {% else %}

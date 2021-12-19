@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-lg-8">
+    {% if user.is_authenticated %}
+    <div class="card mb-4">    	
+        <h2>Nueva categoría</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="{{ form.descripcion.id_for_label }}">{{ form.descripcion.label }}</label>
+                <input type="text" class="form-control" name="{{ form.descripcion.name }}" id="{{ form.descripcion.id_for_label }}" value="" />
+            </div>
+            <div class="btn-group" role="group">
+                <a class="btn btn-dark" type="button" role="button" href="{% url 'categoria_listado' %}">Cancelar</a>
+                <input type="submit" class="btn btn-primary" value="Registrar" />
+            </div>
+        </form>
+    </div>
+    {% else %}
+    <div class="alert alert-danger" role="alert">Esta sección es solo para usuarios autorizados.</div>
+    {% endif %}
+</div>
+{% endblock %}

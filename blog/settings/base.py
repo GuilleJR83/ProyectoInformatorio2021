@@ -39,9 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap5',
+    'categoria.apps.CategoriaConfig',
+    'comentario.apps.ComentarioConfig',
     'cuenta.apps.CuentaConfig',
     'publicacion.apps.PublicacionConfig',
-    'bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'blog.context_processors.procesadores_contexto', 
             ],
         },
     },
@@ -135,6 +138,7 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = 'cuenta/iniciar_sesion/'
 LOGIN_REDIRECT_URL = '/'
 
 STATICFILES_FINDERS = (

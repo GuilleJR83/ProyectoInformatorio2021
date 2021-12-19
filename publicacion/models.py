@@ -1,10 +1,13 @@
 from django.db import models
+
+from categoria.models import Categoria
+from comentario.models import *
 from cuenta.models import Usuario
-#from cuenta.models import *
 
 class Publicacion(models.Model):
     # Definición de claves foráneas
-    autor = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, default=0)
+    autor = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     #comentario = models.ForeignKey(Comentario, on_delete=models.DO_NOTHING)
     #voto = models.ForeignKey(Voto, on_delete=models.DO_NOTHING) # Like
 
@@ -14,6 +17,7 @@ class Publicacion(models.Model):
     contenido = models.TextField(blank=False)
     destacado = models.BooleanField(default=False)
     imagen = models.ImageField(blank=True)
+    #slug = models.SlugField(max_length=250, unique_for_date='published', null=False, unique=True)
     fechaCreacion = models.DateTimeField(auto_now_add=True) # auto_created=True # 
     fechaEdicion = models.DateTimeField(auto_now=True) # editable=False # 
 
@@ -21,27 +25,16 @@ class Publicacion(models.Model):
     def __str__(self):
         return self.titulo
     
-    @property
-    def Id(self):
-        return self.id
+    # def getComentarios(self):
+    #     return Comentario.objects.filter(publicacion=self.id)
 
-class Comentario(models.Model):
-    publicacion = models.ForeignKey(Publicacion, on_delete=models.CASCADE)
-    fechaComentario = models.DateTimeField(auto_now_add=True)
-    contenido = models.TextField()
-
-    def __str__(self):
-        return self.user.username
-
-
-# class Voto(models.Model):
-#      usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
-#      publicacion = models.ForeignKey(Publicacion, on_delete=models.CASCADE)
-
+    # @property
+    # def Id(self):
+    #     return self.id
 
 class Like(models.Model):
-    #usuario = models.ForeignKey()
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     publicacion = models.ForeignKey(Publicacion, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.username
+        return self.usuario.username

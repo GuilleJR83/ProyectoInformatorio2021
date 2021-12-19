@@ -67,7 +67,7 @@
                         <div class="card-body">
                             <div class="row">
                                 {% if user.is_authenticated %}
-                                <p>Hola {{ user.get_username }}, estas son tus opciones.</p>
+                                <p>Hola {{ user.first_name }}, estas son tus opciones.</p>
                                     {% with tipoUsuario=0 %}
                                     {% for grupo in user.groups.all %}
                                         {% if grupo.name == 'Administrador' %}
@@ -90,20 +90,20 @@
                                     <ul class="list-unstyled mb-0">
                                     {% for grupo in user.groups.all %}
                                         {% if grupo.name == 'Administrador' %}
-                                        <li><a href="admin/auth/user/">Listado de usuarios</a></li>
-                                        <li><a href="#">Listado de categorías</a></li>
+                                        <!--<li><a href="{# url 'usuario_listado' #}">Listado de usuarios</a></li>-->
+                                        <li><a href="/admin/auth/user/">Listado de usuarios</a></li>
+                                        <li><a href="{% url 'categoria_listado' %}">Listado de categorías</a></li>
                                         {% endif %}
                                         {% if grupo.name == 'Escritor' %}
                                         <li><a href="{% url 'publicacion_nueva' %}">Nueva publicación</a></li>
+                                        <li><a href="{% url 'publicacion_por_autor' %}">Todas mis publicaciones</a></li>
                                         {% endif %}
                                         {% if grupo.name == 'Lector' %}
                                         <!--NADA-->
                                         {% endif %}
                                     {% endfor %}
-                                        <p><p>
                                         <li><a href="{% url 'cuenta' %}">Perfil</a></li>
                                         <li><a href="{% url 'cambiarPassword' %}">Cambiar contraseña</a></li>
-                                        <li><a href="#{# url 'cambiarPassword' #}">Cambiar e-mail</a></li>
                                         <li><a href="{% url 'cerrar_sesion' %}">Cerrar sesión</a></li>
                                     </ul>
                                 </div>
@@ -119,27 +119,36 @@
                             </div>
                         </div>
                     </div>
+                    
+                    {% if categorias.count > 0 %}
                     <div class="card mb-4">
                         <div class="card-header">Categorías</div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">Web Design</a></li>
-                                        <li><a href="#!">HTML</a></li>
-                                        <li><a href="#!">Freebies</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">JavaScript</a></li>
-                                        <li><a href="#!">CSS</a></li>
-                                        <li><a href="#!">Tutorials</a></li>
-                                    </ul>
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <ul class="list-unstyled mb-0">
+                                        {% for cat in categorias %}
+                                            {% if forloop.counter0|divisibleby:2 %}
+                                            <li><a href="{% url 'categoria_filtrar' cat.id %}">{{ cat.descripcion }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <ul class="list-unstyled mb-0">
+                                        {% for cat in categorias %}
+                                            {% if not forloop.counter0|divisibleby:2 %}
+                                            <li><a href="{% url 'categoria_filtrar' cat.id %}">{{ cat.descripcion }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {% endif %}
 
                     <!-- Side widget-->
                     <div class="card mb-4">

@@ -4,15 +4,36 @@
 <div class="col-lg-8">
     <!-- Featured blog post-->
     {% if user.is_authenticated %}
-    <div class="card mb-4">    	
-        <h1>Edicion de la  publicación</h1>
+    <div class="card mb-4">
+        <h2>Editar publicación</h2>
         <form action="" method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Guardar cambios" />
-
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="{{ form.titulo.id_for_label }}">{{ form.titulo.label }}</label>
+                    <input type="text" class="form-control" required name="{{ form.titulo.name }}" id="{{ form.titulo.id_for_label }}" value="{{ form.titulo.value }}" />
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="{{ form.contenido.id_for_label }}">{{ form.contenido.label }}</label>
+                    <textarea class="form-control" name="{{ form.contenido.name }}" required id="{{ form.contenido.id_for_label }}" aria-label="With textarea" rows="5">{{ form.contenido.value }}</textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="{{ form.categoria.id_for_label }}">{{ form.categoria.label }}</label>
+                    <select class="form-select" aria-label="Seleccione la categoría" required name="{{ form.categoria.name }}" id="{{ form.categoria.id_for_label }}">
+                        <option value="">----------</option>
+                        {% for cat in categorias %}
+                        <option value="{{ cat.id }}" {% if form.categoria.value == cat.id %}selected{% endif %}>{{ cat.descripcion }}</option>
+                        {% endfor %}
+                      </select>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="{{ form.imagen.id_for_label }}">{{ form.imagen.label }}</label>
+                    <input type="file" class="form-control" name="{{ form.imagen.name }}" id="{{ form.imagen.id_for_label }}" value="{{ form.imagen.value }}" />
+                </div>
+                <div class="btn-group" role="group">
+                    <a class="btn btn-dark" type="button" role="button" href="{% url 'index' %}">Cancelar</a>
+                    <input type="submit" class="btn btn-primary" value="Publicar" />
+                </div>
         </form>
-    
     </div>
     {% else %}
     <div class="alert alert-danger" role="alert">Esta sección es solo para usuarios autorizados.</div>
