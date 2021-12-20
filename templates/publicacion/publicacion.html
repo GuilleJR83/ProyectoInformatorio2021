@@ -6,8 +6,14 @@
     <div class="d-flex justify-content-between"><div class="small p-2 bd-highlight">{{ publicacion.fechaCreacion }}</div><div class="small p-2 bd-highlight">En <a href="{% url 'categoria_filtrar' publicacion.categoria.id %}">{{ publicacion.categoria.descripcion }}</a></div></div>
     <h2 class="card-title">{{ publicacion.titulo }}</h2>
     <p class="card-text">{{ publicacion.contenido }}</p>
+  {% if user.is_authenticated %}
+    {# if user.groups.filter('Escritor').exits #}
     <a class="btn btn-primary" href="{% url 'publicacion_editar' publicacion.id %}">Editar</a>
+    {# endif #}
+  {% endif %}
   </div>
+  {% if user.is_authenticated %}
+    {% if user.groups.all.count > 0 %}
   <form action="" method="post">
       {% csrf_token %}
       <div class="input-group mb-3">
@@ -16,8 +22,10 @@
         <input type="submit" class="btn btn-primary" value="Publicar" />
       </div>
   </form>
+    {% endif %}
+  {% endif %}
 {% if comentarios.count > 0 %}
-<div class="card mb-4">  
+<div class="card mb-4">
   <div class="mb-2 text-center"><h2>comentarios de los lectores</h2></div>
   <div class="container ">
     <div class="row d-flex justify-content-left">
@@ -38,9 +46,9 @@
       </div>
     </div>
   </div>
+</div>
 {% else %}
 <div class="alert alert-info" role="alert">Esta publicación aún no tiene comentarios, sé el primero en decir algo.</div>
 {% endif %}
-</div>
 </div>
 {% endblock %}

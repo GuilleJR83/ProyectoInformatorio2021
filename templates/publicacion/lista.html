@@ -6,7 +6,9 @@
 {% for pub in publicaciones %}
     <div class="card mb-4">
         {# if pub.imagen #}{# url 'publicacion_ver' pub.imagen.url #}{# endif #}
-        <a href="{% url 'publicacion_ver' pub.id %}"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" /></a>
+        <!--<a href="{% url 'publicacion_ver' pub.id %}"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" /></a>-->
+        <a href="{% url 'publicacion_ver' pub.id %}"><img class="card-img-top" src="{# pub.imagen.url #}" /></a>
+        <!--<a href="{% url 'publicacion_ver' pub.id %}"><img class="card-img-top" src="/media/01.png" /></a>-->
         <div class="card-body">
             <div class="d-flex justify-content-between"><div class="small p-2 bd-highlight">{{ pub.fechaCreacion }}</div><div class="small p-2 bd-highlight">En <a href="{% url 'categoria_filtrar' pub.categoria.id %}">{{ pub.categoria.descripcion }}</a></div></div>
             <h2 class="card-title">{{ pub.titulo }}</h2>

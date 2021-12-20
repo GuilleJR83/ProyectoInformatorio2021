@@ -32,7 +32,7 @@ def autor(request): # devuelve los post que publicó el usuario actualmente aute
 # Mostrará el form para crear una nueva publicación
 def nueva(request):
     if request.method == 'POST':
-        form = PublicacionNuevaForm(request.POST) # Instanciamos el modelo de FORM que definimos y le asignamos el parámetro <request.POST>
+        form = PublicacionNuevaForm(request.POST, request.FILES) # Instanciamos el modelo de FORM que definimos y le asignamos el parámetro <request.POST>
                                              # para que pase los datos que ingresamos para crear el nuevo usuario.
         if form.is_valid(): # verificamos si todos los datos ingresados (principalmente los requeridos, como nombre de usuario, 
                             # email, clave) están y son válidos.
@@ -49,12 +49,12 @@ def nueva(request):
     else: # Si el método pasado no es POST
         form = PublicacionNuevaForm() # mostramos el form vacío para que el cliente lo rellene
 
-    contexto = {'form': form, } # definimos el contexto para usar en el archivo .html
+    contexto = {'form': form } # definimos el contexto para usar en el archivo .html
     return render(request, 'publicacion/nueva.html', contexto) # renderizamos
 
 def editar(request, id):
     publica = Publicacion.objects.get(pk=id)
-    form = PublicacionEditarForm(request.POST or None, instance=publica) 
+    form = PublicacionEditarForm(request.POST or None, request.FILES, instance=publica) 
     #Al entrar a editar, no quiero que me aparezca los datos vacios
     print("metodo:",request.method)
     if request.method == "POST":
@@ -62,7 +62,7 @@ def editar(request, id):
             publica = form.save()
             return redirect('index')
 
-    contexto = {"form":form}
+    contexto = {"form": form}
     return render (request,'publicacion/editar.html', contexto)
 
 def eliminar(request, id):

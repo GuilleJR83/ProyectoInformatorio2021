@@ -1,21 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-<!-- Blog entries-->
 <div class="col-lg-8">
-    <!-- Featured blog post-->
     {% if user.is_authenticated %}
     <div class="card mb-4">
         <h2>Nueva publicación</h2>
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
+            {# form.as_p #}
                 <div class="input-group mb-3">
                     <label class="input-group-text" for="{{ form.titulo.id_for_label }}">{{ form.titulo.label }}</label>
                     <input type="text" class="form-control" required name="{{ form.titulo.name }}" id="{{ form.titulo.id_for_label }}" value="" />
                 </div>
+                {% if form.titulo.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form.titulo.label }}: {{form.titulo.errors }}
+                </div>
+                {% endif %}
                 <div class="input-group mb-3">
                     <label class="input-group-text" for="{{ form.contenido.id_for_label }}">{{ form.contenido.label }}</label>
                     <textarea class="form-control" name="{{ form.contenido.name }}" required id="{{ form.contenido.id_for_label }}" aria-label="With textarea" rows="5"></textarea>
                 </div>
+                {% if form.categoria.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form.categoria.label }}: {{form.categoria.errors }}
+                </div>
+                {% endif %}
                 <div class="input-group mb-3">
                     <label class="input-group-text" for="{{ form.categoria.id_for_label }}">{{ form.categoria.label }}</label>
                     <select class="form-select" aria-label="Seleccione la categoría" required name="{{ form.categoria.name }}" id="{{ form.categoria.id_for_label }}">
@@ -25,6 +34,11 @@
                         {% endfor %}
                       </select>
                 </div>
+                {% if form.imagen.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form.imagen.label }}: {{form.imagen.errors }}
+                </div>
+                {% endif %}
                 <div class="input-group mb-3">
                     <label class="input-group-text" for="{{ form.imagen.id_for_label }}">{{ form.imagen.label }}</label>
                     <input type="file" class="form-control" name="{{ form.imagen.name }}" id="{{ form.imagen.id_for_label }}" />
