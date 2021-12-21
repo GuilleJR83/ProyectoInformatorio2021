@@ -9,6 +9,7 @@
   {% if user.is_authenticated %}
     {# if user.groups.filter('Escritor').exits #}
     <a class="btn btn-primary" href="{% url 'publicacion_editar' publicacion.id %}">Editar</a>
+    <a class="btn btn-danger" href="{% url 'publicacion_eliminar' publicacion.id %}">Eliminar</a>
     {# endif #}
   {% endif %}
   </div>
