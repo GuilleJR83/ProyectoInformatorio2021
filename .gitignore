@@ -1,4 +1,5 @@
 templates/cuenta/usuario_nuevo.html
+media/*.*
 # Prerequisites
 *.d
 

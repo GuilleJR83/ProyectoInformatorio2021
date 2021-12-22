@@ -1,43 +1,34 @@
 # Importamos el modelo User que vamos a heredar para crear nuestras cuentas de usuarios.
-from django.contrib.auth.models import User
-from django.db import models
-#from django.conf import settings
-
-#User = settings.AUTH_USER_MODEL
-
-
-# Estas tres línes siguientes compensan el no poder hacer override sobre clases abstractas
-# User._meta.get_field('email')._unique = True
-# User._meta.get_field('email').blank = False
-# User._meta.get_field('email').null = False
-
-# Nos permitirá definir los tipos de usuarios en la web
-# class TipoUsuario(models.Model):
-#     descripcion = models.TextField(required=True, max_length=50, unique=True)
+from django.contrib.auth.models import AbstractUser
 
 # Definimos el modelo Usuario el cual utilizaremos para iniciar sesión, publicar post, editarlos, etc.
-class Usuario(User):#(models.Model): #
-    # class Meta:
-    #     proxy = True
-    # no permite hacer override sobre clases abstractas, tales como AbstractUser
-    #user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #email = models.EmailField(unique=True)
-    # tipo = models.ForeignKey(TipoUsuario, on_delete=models.DO_NOTHING)
+class Usuario(AbstractUser):
+    # El modelo de usuario por defecto a usar por Django en todo el proyecto es este, 
+    # y está definido en blog.settings.AUTH_USER_MODEL.
 
     def __str__(self):
         return self.get_username()
     
-    # Devuelve True si el usuario tiene privilegios de <Administrador>.
+    # Devuelve el nombre del grupo al cuál pertenece (Admin/Escritor/Lector)
+    def getTipo(self):
+        if self.esAdministrador:
+            return 'Administrador'
+        elif self.esEscritor:
+            return 'Escritor'
+
+        return 'Lector'
+
+    # Devuelve True si el usuario pertenece al grupo <Administrador>.
     @property
-    def EsAdministrador(self):
+    def esAdministrador(self):
         return self.groups.filter(name = 'Administrador').exists()
     
-    # Devuelve True si el usuario tiene privilegios de <Escritor>.
+    # Devuelve True si el usuario pertenece al grupo <Escritor>.
     @property
-    def EsEscritor(self):
-        return True #self.groups.filter(natural_key='Escritor').exists()
+    def esEscritor(self):
+        return self.groups.filter(name='Escritor').exists() # return True #
     
-    # Devuelve True si el usuario tiene privilegios de <Lector>.
+    # Devuelve True si el usuario pertenece al grupo <Lector>.
     @property
-    def EsLector(self):
+    def esLector(self):
         return self.groups.filter(name = 'Lector').exists()

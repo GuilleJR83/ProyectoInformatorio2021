@@ -1,4 +1,6 @@
 from django.db import models
+
+#from blog import settings
 from cuenta.models import Usuario
 from publicacion.models import Publicacion
 
@@ -12,4 +14,4 @@ class Comentario(models.Model):
         return self.contenido
     
     def getAutor(self):
-        return self.autor.username
+        return self.autor.get_username

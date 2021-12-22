@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 
 from comentario.views import *
 from comentario.models import *
-from cuenta.models import Usuario
+#from cuenta.models import Usuario
 from publicacion.models import *
 from publicacion.forms import *
 
@@ -21,8 +21,8 @@ def index(request): # inicio de la página web
 
     return render(request, template, contexto)
 
-def autor(request): # devuelve los post que publicó el usuario actualmente autenticado
-    listado = Publicacion.objects.filter(autor=request.user.id)
+def autor(request, id): # devuelve los post que publicó el usuario actualmente autenticado
+    listado = Publicacion.objects.filter(autor=id)
     
     template = 'publicacion/lista.html'
     contexto = {'publicaciones': listado, }
@@ -54,16 +54,15 @@ def nueva(request):
 
 def editar(request, id):
     publica = Publicacion.objects.get(pk=id)
-    form = PublicacionEditarForm(request.POST or None, request.FILES, instance=publica) 
-    #Al entrar a editar, no quiero que me aparezca los datos vacios
-    print("metodo:",request.method)
+    form = PublicacionEditarForm(request.POST or None, request.FILES or None, instance=publica) 
+
     if request.method == "POST":
         if form.is_valid():
             publica = form.save()
-            return redirect('index')
+            return redirect('publicacion_ver', id)
 
     contexto = {"form": form}
-    return render (request,'publicacion/editar.html', contexto)
+    return render (request, 'publicacion/editar.html', contexto)
 
 def eliminar(request, id):
     publicacion = Publicacion.objects.get(pk=id)

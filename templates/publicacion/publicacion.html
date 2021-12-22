@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="col-lg-8">
-  <img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" /></a>
+  <img class="card-img-top" src="/media/{{ publicacion.imagen }}" /></a>
   <div class="card-body">
-    <div class="d-flex justify-content-between"><div class="small p-2 bd-highlight">{{ publicacion.fechaCreacion }}</div><div class="small p-2 bd-highlight">En <a href="{% url 'categoria_filtrar' publicacion.categoria.id %}">{{ publicacion.categoria.descripcion }}</a></div></div>
+    <div class="d-flex justify-content-between"><div class="small p-2 bd-highlight">{{ publicacion.fechaCreacion }}</div><div class="small p-2 bd-highlight">Publicado por <a href="{% url 'publicacion_por_autor' publicacion.autor.id %}">{{ publicacion.autor.username }}</a>, en <a href="{% url 'categoria_filtrar' publicacion.categoria.id %}">{{ publicacion.categoria.descripcion }}</a></div></div>
     <h2 class="card-title">{{ publicacion.titulo }}</h2>
     <p class="card-text">{{ publicacion.contenido }}</p>
   {% if user.is_authenticated %}
-    {# if user.groups.filter('Escritor').exits #}
+    {% if user.esEscritor %}
     <a class="btn btn-primary" href="{% url 'publicacion_editar' publicacion.id %}">Editar</a>
-    {# endif #}
+    <a class="btn btn-danger" href="{% url 'publicacion_eliminar' publicacion.id %}">Eliminar</a>
+    {% endif %}
   {% endif %}
   </div>
   {% if user.is_authenticated %}
@@ -17,7 +18,6 @@
   <form action="" method="post">
       {% csrf_token %}
       <div class="input-group mb-3">
-        {#form.as_p#}
         <input type="text" class="form-control" name="{{ form.contenido.name }}" required id="{{ form.contenido.id_for_label }}" maxlength="{{ form.contenido.max_length }}" placeholder="Escribe un comentario." aria-label="{{ form.contenido.id_for_label }}" aria-describedby="{{ form.contenido.id_for_label }}" />
         <input type="submit" class="btn btn-primary" value="Publicar" />
       </div>

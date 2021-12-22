@@ -1,14 +1,12 @@
 #from django.conf import settings
 from django.conf.urls.static import static
 from django import views
-#from django.conf import settings
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import path, include
 from django.utils import decorators
-from .settings import local
+from blog import settings #from .settings import local
 
-#from publicacion.models import Publicacion
 import categoria.views, comentario.views, cuenta.views, publicacion.views
 
 """blog URL Configuration
@@ -38,6 +36,7 @@ urlpatterns = [
     path('blog/post/eliminar/<int:id>/', publicacion.views.eliminar, name='publicacion_eliminar'),
     path('blog/post/<int:id>/', publicacion.views.ver, name='publicacion_ver'),
     path('blog/post/autor/', publicacion.views.autor, name='publicacion_por_autor'),
+    path('blog/post/autor/<int:id>/', publicacion.views.autor, name='publicacion_por_autor'),
     path('blog/post/<int:publicacion_id>/comentario/<int:comentario_id>/', comentario.views.ver, name='comentario_ver'),
 
     path('categoria/listado/', categoria.views.listado, name='categoria_listado'),
@@ -57,4 +56,4 @@ urlpatterns = [
     path('cuenta/cerrar/', cuenta.views.cerrar_sesion, name="cerrar_sesion"),
     path('cuenta/cambiarPassword/', cuenta.views.cambiarPassword, name="cambiarPassword"),
     #path('cuenta/creada/', views.cuenta_creada),
-] + static(local.MEDIA_URL, document_root=local.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

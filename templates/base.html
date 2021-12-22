@@ -68,46 +68,25 @@
                             <div class="row">
                                 {% if user.is_authenticated %}
                                 <p>Hola {{ user.first_name }}, estas son tus opciones.</p>
-                                    {% with tipoUsuario=0 %}
-                                    {% for grupo in user.groups.all %}
-                                        {% if grupo.name == 'Administrador' %}
-                                            {% with tipoUsuario=1 %}
-                                            <p>Tu eres:&nbsp;{{ grupo.name }}</p>
-                                            {% endwith %}
-                                        {% endif %}
-                                        {% if grupo.name == 'Escritor' %}
-                                            {% with tipoUsuario=2 %}
-                                            <p>Tu eres:&nbsp;{{ grupo.name }}</p>
-                                            {% endwith %}
-                                        {% endif %}
-                                        {% if grupo.name == 'Lector' %}
-                                            {% with tipoUsuario=3 %}
-                                            <p>Tu eres:&nbsp;{{ grupo.name }}</p>
-                                            {% endwith %}
-                                        {% endif %}
-                                    {% endfor %}
+                                <p>Tu eres:&nbsp;{{ user.getTipo }}</p>
                                 <div class="col-sm-6">
                                     <ul class="list-unstyled mb-0">
-                                    {% for grupo in user.groups.all %}
-                                        {% if grupo.name == 'Administrador' %}
+                                        {% if user.esAdministrador %}
                                         <!--<li><a href="{# url 'usuario_listado' #}">Listado de usuarios</a></li>-->
-                                        <li><a href="/admin/auth/user/">Listado de usuarios</a></li>
+                                        <!--<li><a href="/admin/auth/user/">Listado de usuarios</a></li>-->
+                                        <li><a href="/admin/cuenta/usuario/">Listado de usuarios</a></li>
                                         <li><a href="{% url 'categoria_listado' %}">Listado de categorías</a></li>
-                                        {% endif %}
-                                        {% if grupo.name == 'Escritor' %}
+                                        {% elif user.esEscritor %}
                                         <li><a href="{% url 'publicacion_nueva' %}">Nueva publicación</a></li>
-                                        <li><a href="{% url 'publicacion_por_autor' %}">Todas mis publicaciones</a></li>
+                                        <li><a href="{% url 'publicacion_por_autor' user.id %}">Todas mis publicaciones</a></li>
+                                        {% else %}
+                                        <!-- LECTOR -->
                                         {% endif %}
-                                        {% if grupo.name == 'Lector' %}
-                                        <!--NADA-->
-                                        {% endif %}
-                                    {% endfor %}
                                         <li><a href="{% url 'cuenta' %}">Perfil</a></li>
                                         <li><a href="{% url 'cambiarPassword' %}">Cambiar contraseña</a></li>
                                         <li><a href="{% url 'cerrar_sesion' %}">Cerrar sesión</a></li>
                                     </ul>
                                 </div>
-                                    {% endwith %}
                                 {% else %}
                                 <div class="col-sm-6">
                                     <ul class="list-unstyled mb-0">

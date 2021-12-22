@@ -14,12 +14,6 @@ from django.contrib.auth.models import Group
 # Importamos la plantilla ERROR 404
 #from django.http.response import Http404
 
-#from django.contrib import messages
-#from django.contrib.auth.models import User
-#import logging
-
-#logger = logging.getLogger(__name__)
-
 # Mostrará la sección con las opciones de edición de cuenta de usuario.
 # Opciones como cambiar clave, cambiar e-mail, nombre/apellido
 def cuenta(request):
