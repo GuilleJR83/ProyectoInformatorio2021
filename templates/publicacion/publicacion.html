@@ -16,6 +16,7 @@
   {% if user.is_authenticated %}
     {% if user.groups.all.count > 0 %}
   <form action="" method="post">
+      {{form.errors}}
       {% csrf_token %}
       <div class="input-group mb-3">
         <input type="text" class="form-control" name="{{ form.contenido.name }}" required id="{{ form.contenido.id_for_label }}" maxlength="{{ form.contenido.max_length }}" placeholder="Escribe un comentario." aria-label="{{ form.contenido.id_for_label }}" aria-describedby="{{ form.contenido.id_for_label }}" />
@@ -24,7 +25,7 @@
   </form>
     {% endif %}
   {% endif %}
-{% if comentarios.count > 0 %}
+{% if comentarios %}
 <div class="card mb-4">
   <div class="mb-2 text-center"><h2>comentarios de los lectores</h2></div>
   <div class="container ">

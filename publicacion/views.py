@@ -54,7 +54,9 @@ def nueva(request):
 
 def editar(request, id):
     publica = Publicacion.objects.get(pk=id)
-    form = PublicacionEditarForm(request.POST or None, request.FILES or None, instance=publica) 
+    form = PublicacionEditarForm(request.POST or None, request.FILES or None, instance=publica)
+    if not request.user == publica.autor:
+        return redirect ('index')
 
     if request.method == "POST":
         if form.is_valid():
@@ -67,6 +69,8 @@ def editar(request, id):
 def eliminar(request, id):
     publicacion = Publicacion.objects.get(pk=id)
     form = PublicacionEliminarForm(request.POST or None, instance=publicacion)
+    if not request.user == publicacion.autor:
+        return redirect ('index')
 
     if request.method == 'POST':
         publicacion.delete()
@@ -87,6 +91,7 @@ def ver(request, id):
             comentario.publicacion=publica
             comentario.save()
             return redirect('comentario_ver', id, comentario.id)
+        print(form.errors)
     
     comentarios = Comentario.objects.filter(publicacion=id) # publica.getComentarios()
     contexto = {'publicacion': publica, 'comentarios': comentarios, 'form': form}

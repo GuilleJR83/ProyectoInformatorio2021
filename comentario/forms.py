@@ -9,7 +9,7 @@ class ComentarioNuevoForm(models.ModelForm):
 
     class Meta:
         model = Comentario
-        fields = ('contenido', 'autor', 'publicacion')
+        fields = ('contenido',)
 
 # class ComentarioEditarForm(models.ModelForm):
 #     descripcion = forms.CharField(max_length=100, required=True, label='Descripción')
