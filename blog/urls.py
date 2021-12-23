@@ -37,7 +37,7 @@ urlpatterns = [
     path('blog/post/<int:id>/', publicacion.views.ver, name='publicacion_ver'),
     path('blog/post/autor/', publicacion.views.autor, name='publicacion_por_autor'),
     path('blog/post/autor/<int:id>/', publicacion.views.autor, name='publicacion_por_autor'),
-    path('blog/post/<int:publicacion_id>/comentario/<int:comentario_id>/', comentario.views.ver, name='comentario_ver'),
+    path('blog/post/<int:publicacion_id>/comentario/<int:comentario_id>/', comentario.views.ver, name='comentario_ver'),    
 
     path('categoria/listado/', categoria.views.listado, name='categoria_listado'),
     path('categoria/nueva/', categoria.views.nueva, name='categoria_nueva'),
