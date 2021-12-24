@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-<!-- Blog entries-->
 <div class="col-lg-8">
-    <!-- Featured blog post-->
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated and user.esAdministrador %}
     <div class="card mb-4">
         <h2>Eliminar categoría</h2>
         <form action="" method="post">

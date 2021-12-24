@@ -14,4 +14,4 @@ class Comentario(models.Model):
         return self.contenido
     
     def getAutor(self):
-        return self.autor.get_username
+        return self.autor.get_username()

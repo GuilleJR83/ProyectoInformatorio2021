@@ -29,7 +29,7 @@
                         <li class="nav-item"><a class="nav-link {% if url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">Inicio</a></li>
                         <!--<li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>-->
                         <li class="nav-item"><a class="nav-link {% if url_name == 'nosotros' %}active{% endif %}" href="{% url 'nosotros' %}">Nosotros</a></li>
-                        <a href="https://give.undp.org"> Dona Ahora</a>
+                        <li class="nav-item"><a class="nav-link" href="https://give.undp.org">Doná ahora</a></li>
                         {% endwith %}
                     </ul>
                 </div>
@@ -42,13 +42,12 @@
                 <div class="text-center my-5">
                     <h1 class="fw-bolder">Bienvenido a nuestro Blog!</h1>
                     <img class="img-fluid rounded mb-5" src="static/img/original.jpg" alt="">
-                    <p class="lead mb-0">Blog dedicado a publicar sobre los ODS,(Objetivos de Desarrollo Sostenible.)</p>
-                    <p>Hoy gracias a internet, podemos ayudar a personas fisicamente en lugares muy distantes, en todo el mundo.La finalidad de esto es que los paises en desarrollo aumenten y mejoren sus condiciones de vida</p>
-                    <p>En nuestro blog, puedes loguearte como lector, o ser escritor, publicando post sobre los temas relacionados, haciendo comentarios que aporten a la causa y hasta poder donar directamente a la pagina oficial en el PNUD(Progrma de las Naciones Unidas para el Desarrollo)</p>
+                    <p class="lead mb-0">Blog dedicado a publicar sobre los ODS (Objetivos de Desarrollo Sostenible).</p>
+                    <p>Hoy gracias a internet, podemos ayudar a personas físicamente en lugares muy distantes, en todo el mundo. La finalidad de esto es que los países en desarrollo aumenten y mejoren sus condiciones de vida.</p>
+                    <p>En nuestro blog, puedes loguearte como lector, o ser escritor, publicando post sobre los temas relacionados, haciendo comentarios que aporten a la causa y hasta poder donar directamente a la página oficial en el PNUD (Progrma de las Naciones Unidas para el Desarrollo).</p>
                 </div>
             </div>
         </header>
-
         <!-- Page content-->
         <div class="container">
             <div class="row">
@@ -71,23 +70,22 @@
                         <div class="card-body">
                             <div class="row">
                                 {% if user.is_authenticated %}
-                                <p>Hola {{ user.first_name }}, estas son tus opciones.</p>
+                                <p>Hola {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.get_username }}{% endif %}, estas son tus opciones.</p>
                                 <p>Tu eres:&nbsp;{{ user.getTipo }}</p>
                                 <div class="col-sm-6">
                                     <ul class="list-unstyled mb-0">
                                         {% if user.esAdministrador %}
-                                        <!--<li><a href="{# url 'usuario_listado' #}">Listado de usuarios</a></li>-->
-                                        <!--<li><a href="/admin/auth/user/">Listado de usuarios</a></li>-->
                                         <li><a href="/admin/cuenta/usuario/">Listado de usuarios</a></li>
                                         <li><a href="{% url 'categoria_listado' %}">Listado de categorías</a></li>                        
+                                        {% elif user.esEscritor %}
                                         <li><a href="{% url 'publicacion_nueva' %}">Nueva Publicación</a></li>
                                         <li><a href="{% url 'publicacion_por_autor' user.id %}">Todas mis publicaciones</a></li>
-                                        <!-- LECTOR -->
+                                        {% else %}
+                                        <!-- AQUÍ VAN LAS OPCIONES PARA EL LECTOR REGISTRADO -->
                                         {% endif %}
                                         <li><a href="{% url 'cuenta' %}">Perfil</a></li>
                                         <li><a href="{% url 'cambiarPassword' %}">Cambiar contraseña</a></li>
                                         <li><a href="{% url 'cerrar_sesion' %}">Cerrar sesión</a></li>
-                                        
                                     </ul>
                                 </div>
                                 {% else %}
@@ -133,10 +131,10 @@
                     {% endif %}
 
                     <!-- Side widget-->
-                    <div class="card mb-4">
+                    <!--<div class="card mb-4">
                         <div class="card-header">Side Widget</div>
                         <div class="card-body">You can put anything you want inside of these side widgets.</div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>

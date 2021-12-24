@@ -63,7 +63,7 @@ def editar(request, id):
             publica = form.save()
             return redirect('publicacion_ver', id)
 
-    contexto = {"form": form}
+    contexto = {'form': form, 'publicacion': publica}
     return render (request, 'publicacion/editar.html', contexto)
 
 def eliminar(request, id):
