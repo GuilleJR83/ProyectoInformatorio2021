@@ -26,7 +26,7 @@ class Usuario(AbstractUser):
     # Devuelve True si el usuario pertenece al grupo <Escritor>.
     @property
     def esEscritor(self):
-        return self.groups.filter(name='Escritor').exists() # return True #
+        return self.groups.filter(name = 'Escritor').exists() # return True #
     
     # Devuelve True si el usuario pertenece al grupo <Lector>.
     @property
