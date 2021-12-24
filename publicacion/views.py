@@ -69,8 +69,8 @@ def editar(request, id):
 def eliminar(request, id):
     publicacion = Publicacion.objects.get(pk=id)
     form = PublicacionEliminarForm(request.POST or None, instance=publicacion)
-    if not request.user == publicacion.autor:
-        return redirect ('index')
+    # if not request.user.esAdministrador():
+    #     return redirect ('index')
 
     if request.method == 'POST':
         publicacion.delete()

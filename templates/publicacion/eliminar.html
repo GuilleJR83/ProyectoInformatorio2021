@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="col-lg-8">
-    {% if user.is_authenticated and user == publicacion.autor %}
+    {% if user.is_authenticated and user.esAdministrador %}
     <div class="card mb-4">
         <h2>Eliminar publicación</h2>
         <form action="" method="post">

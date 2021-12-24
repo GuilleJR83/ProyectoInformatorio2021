@@ -9,6 +9,8 @@
   {% if user.is_authenticated %}
     {% if user.esEscritor and user == publicacion.autor %}
     <a class="btn btn-primary" href="{% url 'publicacion_editar' publicacion.id %}">Editar</a>
+    {% endif %}
+    {% if user.esAdministrador %}
     <a class="btn btn-danger" href="{% url 'publicacion_eliminar' publicacion.id %}">Eliminar</a>
     {% endif %}
   {% endif %}
