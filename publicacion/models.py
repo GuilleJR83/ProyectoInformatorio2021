@@ -1,7 +1,7 @@
 from django.db import models
 
 from categoria.models import Categoria
-from comentario.models import *
+#from comentario.models import *
 from cuenta.models import Usuario
 
 class Publicacion(models.Model):
@@ -19,6 +19,12 @@ class Publicacion(models.Model):
     # Definición de propiedades y métodos
     def __str__(self):
         return self.titulo
+    
+    def getCountComentarios(self):
+        return self.comentario_set.all().count()
+    
+    def getCountLikes(self):
+        return self.like_set.all().count()
 
 class Like(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)

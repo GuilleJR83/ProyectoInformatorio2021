@@ -45,15 +45,21 @@ urlpatterns = [
     path('categoria/eliminar/<int:id>/', categoria.views.eliminar, name='categoria_eliminar'),
     path('categoria/<int:id>/', categoria.views.filtrar, name='categoria_filtrar'),
 
-    #path('usuario/listado/', cuenta.views.usuario_listado, name="usuario_listado"),
-    #path('usuario/nuevo/', cuenta.views.usuario_nuevo, name="usuario_nuevo"),
-    #path('usuario/editar/<int:id>/', cuenta.views.usuario_editar, name="usuario_editar"),
-    #path('usuario/eliminar/<int:id>/', cuenta.views.usuario_eliminar, name="usuario_eliminar"),
+    path('usuario/listado/', cuenta.views.usuario_listado, name="usuario_listado"),
+    path('usuario/nuevo/', cuenta.views.usuario_nuevo, name="usuario_nuevo"),
+    path('usuario/editar/<int:id>/', cuenta.views.usuario_editar, name="usuario_editar"),
+    path('usuario/eliminar/<int:id>/', cuenta.views.usuario_eliminar, name="usuario_eliminar"),
+    path('usuario/tipo/', cuenta.views.tipo_listado, name="tipo_listado"),
+    path('usuario/tipo/nuevo/', cuenta.views.tipo_nuevo, name="tipo_nuevo"),
+    path('usuario/tipo/editar/<int:id>', cuenta.views.tipo_editar, name="tipo_editar"),
+    path('usuario/tipo/eliminar/<int:id>', cuenta.views.tipo_eliminar, name="tipo_eliminar"),
 
     path('cuenta/', cuenta.views.cuenta, name="cuenta"),
     path('cuenta/registrar/', cuenta.views.registrar, name="cuenta_registrar"),
     path('cuenta/iniciar/', cuenta.views.iniciar_sesion, name="iniciar_sesion"),
     path('cuenta/cerrar/', cuenta.views.cerrar_sesion, name="cerrar_sesion"),
     path('cuenta/cambiarPassword/', cuenta.views.cambiarPassword, name="cambiarPassword"),
-    #path('cuenta/creada/', views.cuenta_creada),
+    
+    path('restringido/', cuenta.views.restringido, name='restringido'),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

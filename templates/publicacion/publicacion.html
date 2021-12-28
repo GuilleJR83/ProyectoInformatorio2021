@@ -6,52 +6,64 @@
     <div class="d-flex justify-content-between"><div class="small p-2 bd-highlight">{{ publicacion.fechaCreacion }}</div><div class="small p-2 bd-highlight">Publicado por <a href="{% url 'publicacion_por_autor' publicacion.autor.id %}">{{ publicacion.autor.username }}</a>, en <a href="{% url 'categoria_filtrar' publicacion.categoria.id %}">{{ publicacion.categoria.descripcion }}</a></div></div>
     <h2 class="card-title">{{ publicacion.titulo }}</h2>
     <p class="card-text">{{ publicacion.contenido }}</p>
-  {% if user.is_authenticated %}
-    {% if user.esEscritor and user == publicacion.autor %}
-    <a class="btn btn-primary" href="{% url 'publicacion_editar' publicacion.id %}">Editar</a>
-    {% endif %}
-    {% if user.esAdministrador %}
-    <a class="btn btn-danger" href="{% url 'publicacion_eliminar' publicacion.id %}">Eliminar</a>
-    {% endif %}
-  {% endif %}
+    <div class="d-flex bd-highlight">
+      <div class="me-auto bd-highlight">
+      {% if user.is_authenticated %}
+        {% if user.esEscritor and user == publicacion.autor %}
+        <a class="btn btn-primary" href="{% url 'publicacion_editar' publicacion.id %}">Editar</a>
+        {% endif %}
+        {% if user.esAdministrador %}
+        <a class="btn btn-danger" href="{% url 'publicacion_eliminar' publicacion.id %}">Eliminar</a>
+        {% endif %}
+      {% endif %}
+      </div>
+      <div class="p-2 bd-highlight">
+        <i class="fas fa-comments"></i><a href="{% url 'publicacion_ver' publicacion.id %}">{{ publicacion.getCountComentarios }} Comentario{% if publicacion.getCountComentarios != 1 %}s{% endif %}</a>
+      </div>
+      <!--<div class="p-2 bd-highlight">
+        <i class="fas fa-thumbs-up"></i><a href="{% url 'publicacion_ver' publicacion.id %}">{{ publicacion.getCountLikes }} Me gusta</a>
+      </div>-->
+    </div>
   </div>
   {% if user.is_authenticated %}
-    {% if user.groups.all.count > 0 %}
   <form action="" method="post">
-      {{form.errors}}
       {% csrf_token %}
+      {% if form.comentario.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ form.comentario.label }}: {{form.comentario.errors }}
+        </div>
+      {% endif %}
       <div class="input-group mb-3">
         <input type="text" class="form-control" name="{{ form.contenido.name }}" required id="{{ form.contenido.id_for_label }}" maxlength="{{ form.contenido.max_length }}" placeholder="Escribe un comentario." aria-label="{{ form.contenido.id_for_label }}" aria-describedby="{{ form.contenido.id_for_label }}" />
         <input type="submit" class="btn btn-primary" value="Publicar" />
       </div>
   </form>
-    {% endif %}
   {% endif %}
-{% if comentarios %}
+  {% if comentarios %}
 <div class="card mb-4">
   <div class="mb-2 text-center"><h2>comentarios de los lectores</h2></div>
   <div class="container ">
     <div class="row d-flex justify-content-left">
-      <div class="col-md-11">
-        {% for c in comentarios %}
-        <div class="d-flex mb-2">
-          <div class="card w-100">
-            <div class="card-body p-2">
-              <div class="">
-                <h5 id="comentario{{ c.id }}">{{ c.getAutor }}</h5>
-                <p class="small">{{ c.fechaComentario }}</p>
-                <p>{{ c.contenido }}</p>
+      <div class="col-md-12">
+        <ul class="list-group list-group-flush">
+          {% for c in comentarios %}
+          <li class="list-group-item">
+            <div class="d-flex mb-1">
+              <div class="card-body p-1">
+                  <h5 id="comentario{{ c.id }}">{{ c.getAutor }}</h5>
+                  <p class="small">{{ c.fechaComentario }}</p>
+                  <p>{{ c.contenido }}</p>
               </div>
             </div>
-          </div>
-        </div>
-        {% endfor %}
+          </li>
+          {% endfor %}
+        </ul>
       </div>
     </div>
   </div>
 </div>
-{% else %}
+  {% else %}
 <div class="alert alert-info" role="alert">Esta publicación aún no tiene comentarios, sé el primero en decir algo.</div>
-{% endif %}
+  {% endif %}
 </div>
 {% endblock %}

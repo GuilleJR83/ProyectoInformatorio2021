@@ -1,6 +1,5 @@
 from django.db import models
 
-#from blog import settings
 from cuenta.models import Usuario
 from publicacion.models import Publicacion
 

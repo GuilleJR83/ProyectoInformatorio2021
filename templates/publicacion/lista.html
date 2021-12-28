@@ -2,7 +2,7 @@
 {% block content %}
 <!-- Blog entries-->
 <div class="col-lg-8">
-{% if publicaciones.count > 0 %}
+{% if publicaciones %}
 {% for publicacion in publicaciones %}
     <div class="card mb-4">
         <a href="{% url 'publicacion_ver' publicacion.id %}"><img class="card-img-top" src="/media/{{ publicacion.imagen }}" /></a>
@@ -10,39 +10,39 @@
             <div class="d-flex justify-content-between"><div class="small p-2 bd-highlight">{{ publicacion.fechaCreacion }}</div><div class="small p-2 bd-highlight">Publicado por <a href="{% url 'publicacion_por_autor' publicacion.autor.id %}">{{ publicacion.autor.username }}</a>, en <a href="{% url 'categoria_filtrar' publicacion.categoria.id %}">{{ publicacion.categoria.descripcion }}</a></div></div>
             <h2 class="card-title">{{ publicacion.titulo }}</h2>
             <p class="card-text">{{ publicacion.contenido|truncatechars:250 }}</p>
-            <a class="btn btn-primary" href="{% url 'publicacion_ver' publicacion.id %}">Leer más →</a>
+            <div class="d-flex bd-highlight">
+                <div class="me-auto bd-highlight">
+                    <a class="btn btn-primary" href="{% url 'publicacion_ver' publicacion.id %}">Leer más →</a>
+                </div>
+                <div class="p-2 bd-highlight">
+                    <i class="fas fa-comments"></i><a href="{% url 'publicacion_ver' publicacion.id %}">{{ publicacion.getCountComentarios }} Comentario{% if publicacion.getCountComentarios != 1 %}s{% endif %}</a>
+                </div>
+            </div>
         </div>
     </div>
 {% endfor %}
+{% if publicaciones.has_other_pages %}
     <!-- Pagination-->
-    <!--<nav aria-label="Pagination">
+    <nav aria-label="Pagination">
         <hr class="my-0" />
         <ul class="pagination justify-content-center my-4">
-            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
-            <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
-            <li class="page-item"><a class="page-link" href="#!">2</a></li>
-            <li class="page-item"><a class="page-link" href="#!">3</a></li>
-            <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-            <li class="page-item"><a class="page-link" href="#!">15</a></li>
-            <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+            {% if publicaciones.has_previous %}
+            <li class="page-item"><a class="page-link" href="?pg={{ publicaciones.previous_page_number }}">&laquo;</a></li>
+            {% endif %}
+
+            {% for pg in page_range %}
+            <li class="page-item {% if publicaciones.number == pg %}active{% endif %}"{% if publicaciones.number == pg %} aria-current="page"{% endif %}><a class="page-link" href="?pg={{ pg }}">{{ pg }}</a></li>
+            {% endfor %}
+
+            {% if publicaciones.has_next %}
+            <li class="page-item"><a class="page-link" href="?pg={{ publicaciones.next_page_number }}">&raquo;</i></a></li>
+            {% endif %}
         </ul>
-    </nav>-->
+    </nav>
+{% endif %}
 {% else %}
     <div class="alert alert-info" role="alert">No se han encontrado publicaciones que listar.</div>
 {% endif %}
 </div>
 {% endblock %}
-    <!-- Pagination-->
-    <!--<nav aria-label="Pagination">
-        <hr class="my-0" />
-        <ul class="pagination justify-content-center my-4">
-            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
-            <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
-            <li class="page-item"><a class="page-link" href="#!">2</a></li>
-            <li class="page-item"><a class="page-link" href="#!">3</a></li>
-            <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-            <li class="page-item"><a class="page-link" href="#!">15</a></li>
-            <li class="page-item"><a class="page-link" href="#!">Older</a></li>
-        </ul>
-    </nav>-->
 </div>

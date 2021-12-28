@@ -1,23 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="col-lg-8">
-{% if usuarios.count > 0 %}
+{% if user.esAdministrador %}
+    {% if usuarios.count > 0 %}
     <h2>Listado de usuarios</h2>
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Id. Usuario</th>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre de Usuario</th>
+                <th scope="col">Tipo</th>
                 <th scope="col">Acciones</th>
             </tr>
         </thead>
         <tbody>
 {% for u in usuarios %}
+    {% if u.id != request.user.id %}
             <tr>
                 <td>{{ u.id }}</th>
                 <th scope="row">{{ u.get_username }}</td>
-                <td><a href="{% url 'usuario_editar' u.id %}">Editar</a> | <a href="{% url 'usuario_eliminar' u.id %}">Eliminar</a></td>
+                <td>{{ u.getTipo }}</td>
+                <td><a href="{% url 'usuario_editar' u.id %}">Editar</a>&nbsp;|&nbsp;<a href="{% url 'usuario_eliminar' u.id %}">Eliminar</a></td>
             </tr>
+    {% endif %}
 {% endfor %}
         </tbody>
     </table>
@@ -25,5 +30,8 @@
     <div class="alert alert-info" role="alert">No se han encontrado usuarios que listar.</div>
 {% endif %}
 <a class="btn btn-primary" type="button" href="{% url 'usuario_nuevo' %}">Nuevo usuario</a>
+{% else %}
+<div class="alert alert-danger" role="alert">Esta sección es solo para usuarios autorizados.</div>
+{% endif %}
 </div>
 {% endblock %}

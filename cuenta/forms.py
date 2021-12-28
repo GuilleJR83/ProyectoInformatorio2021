@@ -7,7 +7,7 @@ from django.forms import widgets
 from cuenta.models import Usuario
 
 # Importamos formularios predefinidos de Django
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, UserChangeForm
 
 from django.core.exceptions import ValidationError
 
@@ -26,16 +26,24 @@ class CuentaNuevaForm(UserCreationForm): # Que tiene como clase base <UserCreati
 class UsuarioNuevoForm(UserCreationForm):
     first_name = forms.CharField(max_length=100, required=True, label='Nombre')
     last_name = forms.CharField(max_length=100, required=True, label='Apellido')
-    #groups = forms.ChoiceField(choices=Group.objects.all(), label='Tipo')
 
     class Meta:
         model = Usuario # Que tome como modelo la clase <Usuario> que creamos y heredamos de <User>
         fields = ('username', 'first_name', 'last_name', 'password1', 'password2', 'groups')
+        labels = {'groups': 'Tipo'}
+
+class UsuarioEditarForm(UserChangeForm):
+    groups = forms.ModelMultipleChoiceField(queryset=Group.objects.all(), label='Tipo')
+
+    class Meta:
+        model = Usuario
+        fields = ('first_name', 'last_name', 'groups')
+        widgets = {'groups': forms.SelectMultiple(attrs={'class': 'form-control', }, ), }
 
 class UsuarioEliminarForm(forms.ModelForm):
    class Meta:
        model = Usuario
-       fields = ("username",)
+       fields = ("username", )
 
 # Definimos la clase que mostrará el formulario de inicio de sesión (login)
 class IniciarSesionForm(AuthenticationForm): # heredado de AuthenticationForm

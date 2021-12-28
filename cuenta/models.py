@@ -18,6 +18,21 @@ class Usuario(AbstractUser):
 
         return 'Lector'
 
+    # Devuelve el nombre del grupo al cuál pertenece (Admin/Escritor/Lector)
+    def getTipoId(self):
+        nAux = None
+
+        if self.esAdministrador:
+            nAux = self.groups.filter(name = 'Administrador').values_list('id')
+        elif self.esEscritor:
+            nAux = self.groups.filter(name = 'Escritor').values_list('id')
+        elif self.esLector:
+            nAux = self.groups.filter(name = 'Lector').values_list('id')
+        else:
+            nAux = ((0, ), )
+        
+        return nAux[0][0]
+
     # Devuelve True si el usuario pertenece al grupo <Administrador>.
     @property
     def esAdministrador(self):

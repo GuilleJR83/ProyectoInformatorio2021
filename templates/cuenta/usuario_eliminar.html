@@ -2,13 +2,13 @@
 {% block content %}
 <div class="col-lg-8">
     {% if user.is_authenticated and user.esAdministrador %}
-    <h2>Eliminar publicación</h2>
+    <h2>Eliminar usuario</h2>
     <form action="" method="post">
         {% csrf_token %}
-        <div class="alert alert-warning" role="alert">¿Está seguro que desea eliminar la publicación "{{ publicacion.titulo }}"?</div>
+        <div class="alert alert-warning" role="alert">¿Está seguro que desea eliminar al usuario "{{ usuario.get_username }}"?</div>
         <div class="btn-group" role="group">
-            <a class="btn btn-dark" type="button" role="button" href="{% url 'index' %}">Cancelar</a>
-            <input class="btn btn-danger" type="submit" value="Aceptar" />
+            <a class="btn btn-dark" type="button" role="button" href="{% url 'usuario_listado' %}">Cancelar</a>
+            <input type="submit" class="btn btn-danger" value="Aceptar" />
         </div>
     </form>
     {% else %}

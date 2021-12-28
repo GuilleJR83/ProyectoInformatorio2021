@@ -23,6 +23,29 @@ def cuenta(request):
 
     return render(request, template, contexto)
 
+def restringido(request):
+    template = 'cuenta/restringido.html'
+    contexto = {}
+
+    return render(request, template, contexto)
+
+# Tipos de usuarios, también llamados Grupos de Django.
+def tipo_listado(request):
+    listado = Group.objects.all()
+    template = 'cuenta/usuario_tipo.html'
+    contexto = {'tipos': listado, }
+
+    return render(request, template, contexto)
+
+def tipo_editar(request, id):
+    pass
+
+def tipo_eliminar(request, id):
+    pass
+
+def tipo_nuevo(request, id):
+    pass
+
 # Mostrará el form de registro para un nuevo usuario
 def registrar(request):
     if request.method == 'POST':
@@ -56,8 +79,9 @@ def registrar(request):
 
     #logger.debug('registrar')
 
+    template = 'cuenta/registrar.html'
     contexto = {'form': form, } # definimos el contexto para usar en el archivo .html
-    return render(request, 'cuenta/registrar.html', contexto) # renderizamos
+    return render(request, template, contexto) # renderizamos
 
 # def cuenta_creada(request, id):
 #     try:
@@ -121,17 +145,24 @@ def cambiarPassword(request):
 
 def usuario_listado(request):
     listado = Usuario.objects.all()
-    template = 'cuenta/listado.html'
-    contexto = {'usuarios': listado}
+    template = 'cuenta/usuario_listado.html'
+    contexto = {'usuarios': listado, }
 
     return render(request, template, contexto)
 
 def usuario_editar(request, id):
-    perfil = Usuario.objects.get(pk=id)
-    template = 'cuenta/cuenta.html'
-    contexto = {'perfil': perfil}
+    u = Usuario.objects.get(pk=id)
+    form = UsuarioEditarForm(request.POST or None, instance=u)
 
-    return render(request, template, contexto)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('usuario_listado')
+
+    template = 'cuenta/usuario_editar.html'
+    contexto = {'form': form, 'usuario': u, }
+
+    return render (request, template, contexto)
 
 # Mostrará el form de registro para un nuevo usuario
 def usuario_nuevo(request):
@@ -157,6 +188,6 @@ def usuario_eliminar(request, id):
         usuario.delete()
         return redirect('usuario_listado') # debe retornar al mismo lugar en el que estaba
 
-    template = 'cuenta/eliminar.html'
+    template = 'cuenta/usuario_eliminar.html'
     contexto = {'form': form, 'usuario': usuario}
     return render (request, template, contexto)

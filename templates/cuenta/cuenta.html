@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-<!-- Blog entries-->
 <div class="col-lg-8">
-    <!-- nada por ahora -->
-    &nbsp;
+    <h1>Información de perfil</h1>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Nombre:</strong> <span>{{ user.first_name }}</span></li>
+        <li class="list-group-item"><strong>Apellido:</strong> <span>{{ user.last_name }}</span></li>
+        <li class="list-group-item"><strong>Tipo de usuario:</strong> <span>{{ user.getTipo }}</span></li>
+        <li class="list-group-item"><strong>Estás con nosotros desde:</strong> <span>{{ user.date_joined }}</span></li>
+    </ul>
 </div>
 {% endblock %}

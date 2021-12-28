@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="col-lg-8">
+{% if user.is_authenticated and user.esAdministrador %}
     <h2>Crear nueva cuenta de usuario</h2>
     <form action="" method="post">
         {% csrf_token %}
@@ -46,14 +47,27 @@
             {{ form.password2.label }}: {{form.password2.errors }}
         </div>
         {% endif %}
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="{{ form.groups.id_for_label }}">{{ form.groups.label }}</label>
+            <select class="form-select" aria-label="Seleccione el tipo de usuario" required name="{{ form.groups.name }}" id="{{ form.groups.id_for_label }}">
+                <option value="" selected>----------</option>
+                {% for grupo in grupos %}
+                <option value="{{ grupo.id }}">{{ grupo.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% if form.groups.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ form.groups.label }}: {{form.groups.errors }}
+        </div>
+        {% endif %}
         <div class="btn-group" role="group">
-            <a class="btn btn-dark" type="button" role="button" href="{% url 'index' %}">Cancelar</a>
+            <a class="btn btn-dark" type="button" role="button" href="{% url 'usuario_listado' %}">Cancelar</a>
             <input type="submit" class="btn btn-primary" value="Registrar" />
         </div>
     </form>
-    &nbsp;
-    <div class="alert alert-info" role="alert">
-        ¿Ya tienes cuenta? intenta <a href="{% url 'iniciar_sesion' %}">iniciar sesión</a>.
-    </div>
+{% else %}
+<div class="alert alert-danger" role="alert">Esta sección es solo para usuarios autorizados.</div>
+{% endif %}
 </div>
 {% endblock %}

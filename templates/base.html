@@ -17,7 +17,6 @@
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
     <body>
-        
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
@@ -41,10 +40,10 @@
             <div class="container">
                 <div class="text-center my-5">
                     <h1 class="fw-bolder">Bienvenido a nuestro Blog!</h1>
-                    <img class="img-fluid rounded mb-5" src="static/img/original.jpg" alt="">
+                    <img class="img-fluid rounded mb-5" src="{% static '/img/original.jpg' %}" alt="">
                     <p class="lead mb-0">Blog dedicado a publicar sobre los ODS (Objetivos de Desarrollo Sostenible).</p>
                     <p>Hoy gracias a internet, podemos ayudar a personas físicamente en lugares muy distantes, en todo el mundo. La finalidad de esto es que los países en desarrollo aumenten y mejoren sus condiciones de vida.</p>
-                    <p>En nuestro blog, puedes loguearte como lector, o ser escritor, publicando post sobre los temas relacionados, haciendo comentarios que aporten a la causa y hasta poder donar directamente a la página oficial en el PNUD (Progrma de las Naciones Unidas para el Desarrollo).</p>
+                    <p>En nuestro blog, puedes loguearte como lector, o ser escritor, publicando post sobre los temas relacionados, haciendo comentarios que aporten a la causa y hasta poder donar directamente a la página oficial en el PNUD (Programa de las Naciones Unidas para el Desarrollo).</p>
                 </div>
             </div>
         </header>
@@ -72,24 +71,41 @@
                                 {% if user.is_authenticated %}
                                 <p>Hola {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.get_username }}{% endif %}, estas son tus opciones.</p>
                                 <p>Tu eres:&nbsp;{{ user.getTipo }}</p>
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
+                                <div class="col-sm-12">
+                                    <ul class="list-group list-group-flush">
                                         {% if user.esAdministrador %}
-                                        <li><a href="/admin/cuenta/usuario/">Listado de usuarios</a></li>
-                                        <li><a href="{% url 'categoria_listado' %}">Listado de categorías</a></li>                        
+                                        <li class="list-group-item">
+                                            <ul class="list-unstyled mb-0">
+                                                <li><a href="{% url 'categoria_listado' %}">Listado de categorías</a></li>
+                                                <li><a href="{% url 'tipo_listado' %}">Listado de tipos de usuario</a></li>
+                                                <li><a href="{% url 'usuario_listado' %}">Listado de usuarios</a></li>
+                                            </ul>
+                                        </li>
                                         {% elif user.esEscritor %}
-                                        <li><a href="{% url 'publicacion_nueva' %}">Nueva Publicación</a></li>
-                                        <li><a href="{% url 'publicacion_por_autor' user.id %}">Todas mis publicaciones</a></li>
+                                        <li class="list-group-item">
+                                            <ul class="list-unstyled mb-0">
+                                                <li><a href="{% url 'publicacion_nueva' %}">Nueva publicación</a></li>
+                                                <li><a href="{% url 'publicacion_por_autor' user.id %}">Todas mis publicaciones</a></li>
+                                            </ul>
+                                        </li>
                                         {% else %}
                                         <!-- AQUÍ VAN LAS OPCIONES PARA EL LECTOR REGISTRADO -->
                                         {% endif %}
-                                        <li><a href="{% url 'cuenta' %}">Perfil</a></li>
-                                        <li><a href="{% url 'cambiarPassword' %}">Cambiar contraseña</a></li>
-                                        <li><a href="{% url 'cerrar_sesion' %}">Cerrar sesión</a></li>
+                                        <li class="list-group-item">
+                                            <ul class="list-unstyled mb-0">
+                                                <li><a href="{% url 'cuenta' %}"> Mi perfil</a></li>
+                                                <li><a href="{% url 'cambiarPassword' %}">Cambiar contraseña</a></li>
+                                            <!--</ul>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <ul class="list-unstyled mb-0">-->
+                                                <li><a href="{% url 'cerrar_sesion' %}">Cerrar sesión</a></li>
+                                            </ul>
+                                        </li>
                                     </ul>
                                 </div>
                                 {% else %}
-                                <div class="col-sm-6">
+                                <div class="col-sm-12">
                                     <ul class="list-unstyled mb-0">
                                         <li><a href="{% url 'iniciar_sesion' %}">Iniciar sesión</a></li>
                                         <li><a href="{% url 'cuenta_registrar' %}">Registrarse</a></li>
